@@ -4,22 +4,14 @@ import { useState } from 'react'
 import AssetTypeForm from '@/app/components/AssetTypeForm'
 import AssetManagement from '@/app/components/AssetManagement'
 
-interface AssetType {
-  id: string
-  name: string
-  svgData: string
-  createdAt: Date
-  updatedAt: Date
-}
-
 interface AssetTypesClientProps {
-  assetTypes: AssetType[]
+  assetTypes: any[]
 }
 
 export default function AssetTypesClient({ assetTypes }: AssetTypesClientProps) {
-  const [selectedAssetType, setSelectedAssetType] = useState<AssetType | null>(null)
+  const [selectedAssetType, setSelectedAssetType] = useState<any | null>(null)
 
-  const handleAssetTypeClick = (assetType: AssetType) => {
+  const handleAssetTypeClick = (assetType: any) => {
     if (selectedAssetType?.id === assetType.id) {
       setSelectedAssetType(null)
     } else {
