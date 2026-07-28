@@ -25,6 +25,7 @@ interface FloorItem {
 interface Resource {
   id: string
   name: string
+  project: string
 }
 
 interface AssetType {
@@ -48,7 +49,7 @@ export default function FloorMapClient({ floors: initialFloors, resources, asset
   )
   const [isDragOver, setIsDragOver] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const svgRef = useRef<SVGSVGElement>(null)
+  const svgRef = useRef<SVGSVGElement>(null) as React.RefObject<SVGSVGElement>
   const router = useRouter()
 
   const selectedFloor = floors.find((floor) => floor.id === selectedFloorId)

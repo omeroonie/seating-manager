@@ -74,11 +74,11 @@ function AssetTypePreview({ assetType }: { assetType: AssetType }) {
   )
 }
 
-export default function FloorMap({ floors, resources, assetTypes }: FloorMapClientProps) {
+export default function FloorMap({ floors, resources, assetTypes }: Readonly<FloorMapClientProps>) {
   const [selectedFloorId, setSelectedFloorId] = useState<string>(
     floors.length > 0 ? floors[0].id : ''
   )
-  const svgRef = useRef<SVGSVGElement>(null)
+  const svgRef = useRef<SVGSVGElement>(null!)
 
   const selectedFloor = floors.find((floor) => floor.id === selectedFloorId)
 
