@@ -31,12 +31,12 @@ interface AssetType {
 }
 
 interface AssetTypeFormProps {
-  assetTypes: AssetType[]
-  onAssetTypeClick?: (assetType: AssetType) => void
-  selectedAssetTypeId?: string | null
+  readonly assetTypes: readonly AssetType[]
+  readonly onAssetTypeClick?: (assetType: AssetType) => void
+  readonly selectedAssetTypeId?: string | null
 }
 
-export default function AssetTypeForm({ assetTypes, onAssetTypeClick, selectedAssetTypeId }: AssetTypeFormProps) {
+export default function AssetTypeForm({ assetTypes, onAssetTypeClick, selectedAssetTypeId }: Readonly<AssetTypeFormProps>) {
   const [state, formAction] = useActionState(createAssetType, initialState)
   const formRef = useRef<HTMLFormElement>(null)
 
