@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AssetType {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  svgData   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  assets    Asset[]
+
+  @@map("asset_types")
+}
+
+model Asset {
+  id           String    @id @default(cuid())
+  label        String
+  assignedTo   String?
+  project      String?
+  assetTypeId  String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  assetType    AssetType @relation(fields: [assetTypeId], references: [id], onDelete: Cascade)
+  
+  @@map("assets")
+}
+
+model Floor {
+  id        String      @id @default(cuid())
+  name      String
+  width     Int
+  height    Int
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  items     FloorItem[]
+
+  @@map("floors")
+}
+
+model FloorItem {
+  id         String   @id @default(cuid())
+  floorId    String
+  type       String   // Asset type name
+  posX       Float
+  posY       Float
+  rotation   Float    @default(0)
+  label      String?
+  assignedTo String?  // Resource ID
+  project    String?  // Project name
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  floor      Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  
+  @@map("floor_items")
+}
