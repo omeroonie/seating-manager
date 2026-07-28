@@ -6,11 +6,42 @@ import {
   readOfflineData, 
   writeOfflineData, 
   STORAGE_KEYS,
-  updateFloorInOfflineStorage,
-  updateFloorItemInOfflineStorage,
+  
+  
   addFloorItemToOfflineStorage,
-  removeFloorItemFromOfflineStorage
+  
 } from '@/app/lib/offline-storage'
+
+interface Position {
+  x: number
+  y: number
+}
+
+interface FloorItem {
+  id: string
+  type: string
+  pos: Position
+  rotation?: number
+  label?: string | null
+  assignedTo?: string | null
+  project?: string | null
+}
+
+interface OfflineFloor {
+  id: string
+  name: string
+  width: number
+  height: number
+  items?: FloorItem[]
+}
+
+interface OfflineAsset {
+  id: string
+  label: string
+  assignedTo?: string | null
+  project?: string | null
+  assetTypeId: string
+}
 
 export async function createAssetType(prevState: any, formData: FormData) {
   const name = formData.get('name') as string
@@ -304,7 +335,29 @@ export async function getFloors() {
     })
     
     // Transform the data to match the Floor interface
-    const transformedFloors = floors.map(floor => ({
+    interface FloorItemPosition {
+      x: number
+      y: number
+    }
+
+    interface TransformedFloorItem {
+      id: string
+      type: string
+      pos: FloorItemPosition
+      rotation: number
+      label?: string
+      assignedTo?: string
+    }
+
+    interface TransformedFloor {
+      id: string
+      name: string
+      width: number
+      height: number
+      items: TransformedFloorItem[]
+    }
+
+    const transformedFloors: TransformedFloor[] = floors.map((floor: { id: any; name: any; width: any; height: any; items: any[] }) => ({
       id: floor.id,
       name: floor.name,
       width: floor.width,
@@ -736,10 +789,10 @@ export async function saveFloorsToDatabase() {
     }
 
     // Start a transaction to save all data
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: { floor: { findUnique: (arg0: { where: { id: any } }) => any; update: (arg0: { where: { id: any }; data: { name: any; width: any; height: any } }) => any; create: (arg0: { data: { id: any; name: any; width: any; height: any } }) => any }; floorItem: { deleteMany: (arg0: { where: { floorId: any } }) => any; create: (arg0: { data: { id: any; floorId: any; type: any; posX: any; posY: any; rotation: any; label: any; assignedTo: any; project: any } }) => any } }) => {
       const savedFloors = []
       
-      for (const floor of offlineFloors) {
+      for (const floor of offlineFloors as any[]) {
         // Check if floor exists in database
         const existingFloor = await tx.floor.findUnique({
           where: { id: floor.id }
@@ -775,7 +828,7 @@ export async function saveFloorsToDatabase() {
 
         // Create new floor items
         if (floor.items && floor.items.length > 0) {
-          for (const item of floor.items) {
+          for (const item of floor.items as any[]) {
             await tx.floorItem.create({
               data: {
                 id: item.id,
