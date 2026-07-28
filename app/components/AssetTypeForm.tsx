@@ -7,8 +7,7 @@ import { useEffect, useRef } from 'react'
 
 const initialState = {
   success: false,
-  error: '',
-  data: null
+  error: ''
 }
 
 function SubmitButton() {
@@ -25,9 +24,15 @@ function SubmitButton() {
   )
 }
 
+interface AssetType {
+  id: string
+  name: string
+  createdAt: string
+}
+
 interface AssetTypeFormProps {
-  assetTypes: any[]
-  onAssetTypeClick?: (assetType: any) => void
+  assetTypes: AssetType[]
+  onAssetTypeClick?: (assetType: AssetType) => void
   selectedAssetTypeId?: string | null
 }
 
@@ -36,8 +41,8 @@ export default function AssetTypeForm({ assetTypes, onAssetTypeClick, selectedAs
   const formRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
-    if (state.success) {
-      formRef.current?.reset()
+    if (state.success && formRef.current) {
+      formRef.current.reset()
     }
   }, [state.success])
 
