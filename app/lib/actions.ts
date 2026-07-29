@@ -111,7 +111,7 @@ export async function createAssetType(prevState: any, formData: FormData) {
 export async function getAssetTypes() {
   try {
     // Try to read from offline storage first
-    const cachedData = await readOfflineData(STORAGE_KEYS.ASSET_TYPES)
+    const cachedData = await readOfflineData<any[]>(STORAGE_KEYS.ASSET_TYPES)
     
     if (cachedData) {
       return cachedData
@@ -226,7 +226,7 @@ export async function getAssetsByType(assetTypeId: string) {
 export async function getAllAssets() {
   try {
     // Try to read from offline storage first
-    const cachedData = await readOfflineData(STORAGE_KEYS.ASSETS)
+    const cachedData = await readOfflineData<any[]>(STORAGE_KEYS.ASSETS)
     
     if (cachedData) {
       return cachedData
@@ -320,7 +320,7 @@ export async function updateAsset(prevState: any, formData: FormData) {
 export async function getFloors() {
   try {
     // Try to read from offline storage first
-    const cachedData = await readOfflineData(STORAGE_KEYS.FLOORS)
+    const cachedData = await readOfflineData<any[]>(STORAGE_KEYS.FLOORS)
     
     if (cachedData) {
       return cachedData

@@ -3,6 +3,8 @@ import { getFloors } from '@/app/lib/actions'
 import { resources } from '@/app/lib/resources'
 import { prisma } from '@/app/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function MapPage() {
   const [floors, assetTypes] = await Promise.all([
     getFloors(),

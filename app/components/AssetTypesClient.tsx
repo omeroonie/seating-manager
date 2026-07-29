@@ -5,10 +5,10 @@ import AssetTypeForm from '@/app/components/AssetTypeForm'
 import AssetManagement from '@/app/components/AssetManagement'
 
 interface AssetTypesClientProps {
-  assetTypes: any[]
+  readonly assetTypes: readonly any[]
 }
 
-export default function AssetTypesClient({ assetTypes }: AssetTypesClientProps) {
+export default function AssetTypesClient({ assetTypes }: Readonly<AssetTypesClientProps>) {
   const [selectedAssetType, setSelectedAssetType] = useState<any | null>(null)
 
   const handleAssetTypeClick = (assetType: any) => {
