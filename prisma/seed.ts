@@ -1,14 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
-import { Pool } from 'pg'
 import * as dotenv from 'dotenv'
 
 // Load environment variables
 dotenv.config()
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const adapter = new PrismaPg(pool as any)
+const adapter = new PrismaPg(process.env.DATABASE_URL!)
 const prisma = new PrismaClient({ adapter })
 
 const assetTypesData = [
@@ -437,5 +434,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect()
-    await pool.end()
   })
