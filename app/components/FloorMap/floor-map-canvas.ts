@@ -50,9 +50,18 @@ export class FloorMapCanvas extends LitElement {
     resources:  { type: Array },
   }
 
-  floor:      Floor | null  = null
-  assetTypes: AssetType[]   = []
-  resources:  Resource[]    = []
+  // Use `declare` so TypeScript knows the types without emitting class-field
+  // initialisers that would overwrite Lit's reactive property accessors.
+  declare floor:      Floor | null
+  declare assetTypes: AssetType[]
+  declare resources:  Resource[]
+
+  constructor() {
+    super()
+    this.floor      = null
+    this.assetTypes = []
+    this.resources  = []
+  }
 
   // Internal drag state – managed manually, not through Lit reactivity
   private _dragItemId:      string | null   = null
